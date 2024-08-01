@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Letter</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow-y: hidden;
+        }
+
+        .letter-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            perspective: 1000px;
+        }
+
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ffcccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            z-index: 2;
+            overflow: hidden;
+            flex-direction: column;
+            transform: rotate(-10deg);
+        }
+
+        .letter-container:hover .envelope {
+            transform: rotate(0deg);
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100px;
+            background-color: #ffcccc;
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            transition: transform 0.6s ease;
+            transform-origin: top;
+        }
+
+        .letter-container:hover .flap {
+            transform: rotateX(-180deg);
+        }
+
+        .letter {
+            position: absolute;
+            top: 100%;
+            width: 98%;
+            height: 98%;
+            background-color: #ffffff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            z-index: 1; 
+        }
+
+        .letter.active {
+            opacity: 1;
+            visibility: visible;
+            top: 0;
+        }
+
+        .envelope-content h2 {
+            font-size: 36px;
+            color: #cc0000;
+            margin: 0;
+        }
+
+        .envelope-content p {
+            font-size: 48px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .letter h1 {
+            font-size: 24px;
+            color: #cc0000;
+            margin-bottom: 20px;
+        }
+
+        .letter p {
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            margin: 0 20px;
+        }
+
+        .letter p:last-child {
+            margin-top: 20px;
+        }
+
+        .envelope-closing{
+            position: relative;
+            width:100%;
+            height:5%;
+            z-index: 3;
+            top:-35%;
+            background-color: #ff3333;
+        }
+
+        #closingOutlier{
+            position: relative;
+            width:100%;
+            height: 6%;
+            z-index: 1;
+            top:2%;
+            background-color: #ff3333;
+            visibility: hidden;
+        }
+
+        .heart{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="letter-container">
+        <div id="closingOutlier"></div>
+        <div class="envelope" id="envelope">
+            <div class="envelope-closing" id="closing"></div>
+            <div class="flap"></div>
+            <div class="envelope-content">
+                <h2>Love Letter</h2>
+                <p onclick="openLetter()" class="heart">❤️</p>
+            </div>
+        </div>
+        <div class="letter" id="letter">
+            <h1>Dear Love,</h1>
+            <p>From the moment I met you, my heart knew you were the one. Each day with you is a treasure, and my love for you grows stronger with each passing moment. I cherish every moment we spend together and look forward to a future filled with joy and happiness. You are my everything, and I love you more than words can express.</p>
+            <p>Forever Yours,<br>Your Name</p>
+        </div>
+    </div>
+
+    <script>
+        function openLetter() {
+            const letter = document.getElementById('letter');
+            const envelope = document.getElementById('envelope');
+            const envelopeClosing = document.getElementById('closing');
+            const envelopeClosingOutlier = document.getElementById('closingOutlier');
+
+            setTimeout(() => {
+                letter.classList.add('active');
+
+                envelope.style.transform = 'rotate(0deg)';
+                letter.style.visibility='hidden';
+                setTimeout(() => {
+                    envelopeClosing.style.transform = 'translateY(-10px)';
+                    envelopeClosingOutlier.style.visibility= "visible";
+                    setTimeout(() => {
+                        letter.style.transform = 'translateY(-400px)';
+                        letter.style.visibility= 'visible';
+                        setTimeout(() => {
+                            envelopeClosingOutlier.style.visibility= "hidden";
+                            letter.style.transform = 'translateY(0)';
+                            envelope.style.transform = 'rotate(-10deg)';
+                            letter.style.zIndex = 3;
+                            envelope.style.zIndex = 1;
+                        }, 600);
+                    }, 300);
+                }, 600);
+            }, 600);
+        }
+    </script>
+</body>
+</html>
