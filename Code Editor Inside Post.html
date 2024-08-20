@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendly Code Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/theme/monokai.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+        }
+
+        .editor-wrapper {
+            width: 90%;
+            max-width: 600px;
+            height: 400px;
+            background-color: #e0f7fa;
+            border-radius: 15px; 
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .file-header {
+            padding: 10px;
+            background-color: #4fc3f7; 
+            color: #fff;
+            font-weight: bold;
+            text-align: left;
+            border-bottom: 2px solid #0288d1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .file-header .title {
+            flex: 1;
+        }
+
+        .file-header .icons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .file-header .icons div {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .file-header .icons .close {
+            background-color: #ff4d4d;
+        }
+
+        .file-header .icons .minimize {
+            background-color: #ffcc00;
+        }
+
+        .file-header .icons .maximize {
+            background-color: #00e676;
+        }
+
+        .separator {
+            height: 2px;
+            background: linear-gradient(to right, #4fc3f7, #81d4fa, #4fc3f7);
+            margin: 10px 0;
+        }
+
+        .editor-container {
+            height: calc(100% - 50px); 
+            position: relative;
+            background: #ffffff; /* Light background for better readability */
+        }
+
+        .editor-container::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #ffeb3b 0%, transparent 40%);
+            border-radius: 50%;
+            z-index: 1;
+            animation: bubble 5s infinite ease-in-out;
+        }
+
+        .editor-container::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #ffeb3b 0%, transparent 40%);
+            border-radius: 50%;
+            z-index: 1;
+            animation: bubble 6s infinite ease-in-out;
+        }
+
+        @keyframes bubble {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .CodeMirror {
+            height: 100%;
+            border: none;
+            background: #ffffff; /* Light background for better readability */
+        }
+
+        .CodeMirror-lines {
+            padding: 0 15px;
+        }
+
+        .CodeMirror-gutter {
+            background-color: #e0f7fa;
+            border-right: 2px solid #b2ebf2; /* Clearer separator */
+        }
+
+        .CodeMirror-gutter-elt {
+            color: #00796b; 
+            padding-right: 5px; /* Added padding for alignment */
+        }
+
+        .CodeMirror-gutter-linenumber {
+            text-align: right;
+            padding-right: 0px;
+        }
+
+        .CodeMirror-lines pre {
+            word-break: break-all; /* Ensures text wraps correctly */
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-wrapper">
+        <div class="file-header">
+            <div class="title">Code Editor</div>
+            <div class="icons">
+                <div class="minimize"></div>
+                <div class="maximize"></div>
+                <div class="close"></div>
+            </div>
+        </div>
+        <div class="separator"></div>
+        <div class="editor-container">
+            <textarea id="code" name="code">
+// Your code here
+function helloWorld() {
+    console.log("Hello, World!");
+}
+helloWorld();
+            </textarea>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/addon/lint/lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.7/addon/lint/javascript-lint.min.js"></script>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: 'javascript',
+            theme: 'monokai',
+            lineNumbers: true,
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            lint: true,
+            lineWrapping: true,  // Ensure lines wrap correctly
+        });
+    </script>
+</body>
+</html>
